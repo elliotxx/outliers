@@ -62,6 +62,28 @@ optional arguments:
                         Note: .ini file parameters can overwrite command-line parameters with the same name
 ```
 
+## 输入文件格式
+格式要求：
+1. 输入文件必须为 csv 格式，比如 data.csv
+2. 输入 csv 文件必须包含头部(header)，可参考项目目录下的 data.csv
+3. 输入 csv 文件必须包含以下 KPI：
+```
+'timestamp', 'retxclientRate', 'retxserverRate', 'zerowindowclientnum',
+'zerowindowservernum', 'transresptime', 'clientseglostRate', 'serverseglostRate',
+```
+
+所需 KPI 计算公式：
+```
+# 客户端重传率
+data['retxclientRate'] = data['retxclientnum'] / data['totalclientpkts']
+# 服务端重传率
+data['retxserverRate'] = data['retxservernum'] / data['totalserverpkts']
+# 客户端丢包率
+data['clientseglostRate'] = data['clientseglostnum'] / data['totalclientpkts']
+# 服务端丢包率
+data['serverseglostRate'] = data['serverseglostnum'] / data['totalserverpkts']
+```
+
 ## 样例
 #### 不指定任何参数
 ```
