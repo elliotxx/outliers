@@ -16,6 +16,13 @@ scikit-learn>=0.19.2
 Note: 离线安装的话，whl安装包可在 https://pypi.org 中搜索下载
 
 ## 安装
+如果是离线安装，请先运行：
+```
+chmod +x install.sh
+./download_pkgs.sh
+```
+
+安装
 ```
 chmod +x install.sh
 ./install.sh
