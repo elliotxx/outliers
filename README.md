@@ -3,9 +3,22 @@
 
 ## 依赖
 ```
-pandas>=0.22.0
+wheel>=0.32.3
 numpy>=1.14.5
+six>=1.5
+python-dateutil>=2
+pytz>=2011k
+pandas>=0.22.0
+SciPy>= 0.13.3
 scikit-learn>=0.19.2
+```
+
+Note: 离线安装的话，whl安装包可在 https://pypi.org 中搜索下载
+
+## 安装
+```
+chmod +x install.sh
+./install.sh
 ```
 
 ## 用法
@@ -136,6 +149,7 @@ Don't predict.
 * Save and Load Machine Learning Models in Python with scikit-learn(孤立森林模型的保存和加载)  
 https://machinelearningmastery.com/save-load-machine-learning-models-python-scikit-learn/
 
+#### 使用 argparse 解析命令行参数
 * argparse — Parser for command-line options, arguments and sub-commands(argparse 官方文档)  
 https://docs.python.org/3/library/argparse.html
 
@@ -144,3 +158,20 @@ https://www.cnblogs.com/lovemyspring/p/3214598.html
 
 * python学习之argparse模块  
 https://zhuanlan.zhihu.com/p/28871131
+
+#### 使用 python setup.py 打包
+* python的构建工具setup.py  
+https://www.cnblogs.com/maociping/p/6633948.html
+
+* python的setup问题(比较详细)  
+https://blog.csdn.net/langb2014/article/details/53114341
+
+* 使用 Setup 将Python 代码 打包  
+http://www.cnblogs.com/yunfeiqi/p/6844771.html
+
+* Python 打包，entry_points的使用  
+https://blog.csdn.net/llsmingyi/article/details/78691287
+
+* python setup.py uninstall - stackoverflow  
+https://stackoverflow.com/questions/1550226/python-setup-py-uninstall
+

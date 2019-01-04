@@ -3,6 +3,7 @@
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import IsolationForest
+import os
 import sys
 import pickle
 import argparse
@@ -76,12 +77,18 @@ class Outliers:
         读取原始数据文件
         如果不指定 filename 参数，则默认读取 self.input_filename 定义的文件
         '''
-        if filename:
-            print('Reading `%s`...'%filename)
-            self.origin_data = pd.read_csv(filename)
-        else:
-            print('Reading `%s`...'%self.input_filename)
-            self.origin_data = pd.read_csv(self.input_filename)
+        # 是否指定了输入文件
+        if filename is None:
+            filename = self.input_filename
+            
+        print('Reading `%s`...'%filename)
+
+        # 判断文件是否存在
+        if not os.path.exists(filename):
+            raise Exception('File `%s` is not provided'%filename)
+
+        # 读取原始数据
+        self.origin_data = pd.read_csv(filename)
 
     def preprocess(self):
         '''
@@ -272,17 +279,25 @@ def _parse_config(config_filename):
     return args
 
 
+def main():
+    try:
+        # 解析命令行参数
+        args = _parse_args()
+        # 获取的参数转换为字典
+        args = vars(args)
+        # 如果使用了 --ini 参数，则读取配置文件中的参数
+        if 'config_filename' in args.keys() and args['config_filename']:
+            config_args = _parse_config(args['config_filename'])
+            args.update(config_args)
+        # 传入参数前需要删除 config_filename 参数
+        if 'config_filename' in args.keys():
+            del args['config_filename']
+        # 传入参数，进行异常点检测
+        Outliers(**args).detect()
+    except Exception as e:
+        print('[ERROR] ' + str(e))
+        print('[INFO] You can enter `outliers -h` to see help')
+
+
 if __name__ == '__main__':
-    # 解析命令行参数
-    args = _parse_args()
-    # 获取的参数转换为字典
-    args = vars(args)
-    # 如果使用了 --ini 参数，则读取配置文件中的参数
-    if 'config_filename' in args.keys() and args['config_filename']:
-        config_args = _parse_config(args['config_filename'])
-        args.update(config_args)
-    # 传入参数前需要删除 config_filename 参数
-    if 'config_filename' in args.keys():
-        del args['config_filename']
-    # 传入参数，进行异常点检测
-    Outliers(**args).detect()
+    main()
