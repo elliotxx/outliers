@@ -3,3 +3,7 @@
 *.tar.gz
 *.tgz
 pkgs/
+build/
+dist/
+outliers.egg-info/
+outliers_result.csv
