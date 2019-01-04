@@ -7,3 +7,4 @@ build/
 dist/
 outliers.egg-info/
 outliers_result.csv
+*.model
