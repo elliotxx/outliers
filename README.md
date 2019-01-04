@@ -16,19 +16,21 @@ scikit-learn>=0.19.2
 Note: 离线安装的话，whl安装包可在 https://pypi.org 中搜索下载
 
 ## 安装
-如果是离线安装，请先运行以下命令，手动下载依赖包：
+如果是离线安装，可以运行以下脚本，下载所有依赖包：
 ```
+chmod +x download_pkgs.sh
 ./download_pkgs.sh
 ```
 
 安装
 ```
+chmod +x install.sh
 ./install.sh
 ```
 
 ## 用法
 ```
->>> python outliers.py -h
+>>> outliers -h
 usage: outliers.py [-h] [-i INPUT_FILENAME] [-o OUTPUT_FILENAME]
                    [-n N_ESTIMATORS] [-p PROPORTION] [-b BATCH] [-v VERBOSE]
                    [-s] [-l] [-m MODELNAME] [--ini CONFIG_FILENAME]
@@ -63,7 +65,7 @@ optional arguments:
 ## 样例
 #### 不指定任何参数
 ```
->>> python outliers.py
+>>> outliers
 Reading `data.csv`...
 Data preprocessing...
 Model training...
@@ -73,7 +75,7 @@ Writing `outliers_result.csv`...
 
 #### 指定输入输出文件
 ```
->>> python outliers.py -i test_input.csv -o test_result.csv
+>>> outliers -i test_input.csv -o test_result.csv
 Reading `test_input.csv`...
 Data preprocessing...
 Model training...
@@ -83,7 +85,7 @@ Writing `test_result.csv`...
 
 #### 训练参数
 ```
->>> python outliers.py -n 200 -p 0.1 -b 128 -v 1
+>>> outliers -n 200 -p 0.1 -b 128 -v 1
 Reading `data.csv`...
 Data preprocessing...
 Model training...
@@ -96,7 +98,7 @@ Writing `outliers_result.csv`...
 #### 模型保存/加载控制
 ```
 # 只训练并保存模型，不预测。默认保存的模型名为 `IsolationForest.model`
->>> python outliers.py -s
+>>> outliers -s
 Reading `data.csv`...
 Data preprocessing...
 Model training...
@@ -104,7 +106,7 @@ Saving model to `IsolationForest.model`...
 Don't predict.
 
 # 只训练并保存模型，不预测。指定要保存的模型名
->>> python outliers.py -s -m test.mod
+>>> outliers -s -m test.mod
 Reading `data.csv`...
 Data preprocessing...
 Model training...
@@ -112,7 +114,7 @@ Saving model to `test.mod`...
 Don't predict.
 
 # 加载本地模型，然后预测，指定加载的模型
->>> python outliers.py -l -m test.mod
+>>> outliers -l -m test.mod
 Reading `data.csv`...
 Data preprocessing...
 Loading model from `test.mod`...
@@ -120,7 +122,7 @@ Outliers predicting...
 Writing `outliers_result.csv`...
 
 # 训练且预测，并保存模型到本地，指定模型名称
->>> python outliers.py -sl -m test.mod
+>>> outliers -sl -m test.mod
 Reading `data.csv`...
 Data preprocessing...
 Model training...
@@ -133,14 +135,19 @@ Writing `outliers_result.csv`...
 配置文件样例 config.ini
 ```
 [config]
-proportion = 0.01
-verbose = 1
-isSaveModel = True
-modelname = test.model
+input_filename = data.csv
+output_filename = outliers_result.csv
+n_estimators = 100
+proportion = 0.001
+batch = 256
+verbose = 0
+issavemodel = False
+isloadmodel = False
+modelname = IsolationForest.model
 ```
 运行
 ```
->>> python outliers.py --ini config.ini
+>>> outliers --ini config.ini
 Reading `data.csv`...
 Data preprocessing...
 Model training...

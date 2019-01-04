@@ -211,6 +211,11 @@ class Outliers:
         data['is_outlier'] = all_pred
         data['outlier_score'] = all_score
 
+        # 转换输出列值
+        data['timestamp'] = data['timestamp'].astype('int64')
+        data.loc[data.is_outlier == 1, 'is_outlier'] = 0
+        data.loc[data.is_outlier == -1, 'is_outlier'] = 1
+
         print('Writing `%s`...'%self.output_filename)
         data.to_csv(self.output_filename, columns=['timestamp', 'outlier_score', 'is_outlier'], header=True, index=0)
 
@@ -271,10 +276,10 @@ def _parse_config(config_filename):
             args[k] = int(v)
         elif k == 'verbose':
             args[k] = int(v)
-        elif k == 'isSaveModel':
-            args[k] = bool(v)
-        elif k == 'isLoadModel':
-            args[k] = bool(v)
+        elif k == 'issavemodel':
+            args[k] = eval(v)
+        elif k == 'isloadmodel':
+            args[k] = eval(v)
 
     return args
 
@@ -283,17 +288,22 @@ def main():
     try:
         # 解析命令行参数
         args = _parse_args()
+
         # 获取的参数转换为字典
         args = vars(args)
+
         # 如果使用了 --ini 参数，则读取配置文件中的参数
         if 'config_filename' in args.keys() and args['config_filename']:
             config_args = _parse_config(args['config_filename'])
             args.update(config_args)
+
         # 传入参数前需要删除 config_filename 参数
         if 'config_filename' in args.keys():
             del args['config_filename']
+
         # 传入参数，进行异常点检测
         Outliers(**args).detect()
+
     except Exception as e:
         print('[ERROR] ' + str(e))
         print('[INFO] You can enter `outliers -h` to see help')
